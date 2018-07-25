@@ -1,0 +1,29 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(http-equiv='X-UA-Compatible', content='ie=edge')
+    title 注册
+  body
+    h3 注册
+    form
+      input#userName(type='text')
+      input#userPass(type='password')
+      input#userEmail(type='text')
+      button#signupBtn(type='button') 注册
+    script(src='http://ajax.microsoft.com/ajax/jquery/jquery-1.4.min.js')
+    script.
+      $(document).ready(function(){
+      $("#signupBtn").click(function(){
+      $.ajax({
+      type: "post",
+      url: "/api/v1/signup",
+      data: {userName:$("#userName").val(), userPass:$("#userPass").val(), userEmail:$("#userEmail").val()},
+      dataType: "json",
+      success: function(data){
+      alert('res :' + JSON.stringify(data));
+      }
+      });
+      });
+      });

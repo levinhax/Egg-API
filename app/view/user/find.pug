@@ -1,0 +1,26 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(http-equiv='X-UA-Compatible', content='ie=edge')
+    title 查找用户信息
+  body
+    h3 查找用户信息
+    div.userInfo
+    script(src='http://ajax.microsoft.com/ajax/jquery/jquery-1.4.min.js')
+    script.
+      $(document).ready(function(){
+      (function(){
+      var _id = localStorage._id;
+      $.ajax({
+      type: "get",
+      url: "/api/v1/user/" + _id,
+      dataType: "json",
+      success: function(data){
+      //- alert('res :' + JSON.stringify(data));
+      $('.userInfo').text(JSON.stringify(data));
+      }
+      });
+      })();
+      });

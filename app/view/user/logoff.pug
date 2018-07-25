@@ -1,0 +1,29 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(http-equiv='X-UA-Compatible', content='ie=edge')
+    title 用户注销
+  body
+    h3 用户注销
+    button#logoffBtn(type='button') 用户注销
+    script(src='http://ajax.microsoft.com/ajax/jquery/jquery-1.4.min.js')
+    script.
+      $(document).ready(function(){
+      $("#logoffBtn").click(function(){
+      $.ajax({
+      type: "delete",
+      beforeSend: function(request) {
+        request.setRequestHeader("Authorization", localStorage.token);
+      },
+      url: "/api/v1/logoff",
+      data: {_id: localStorage._id},
+      dataType: "json",
+      success: function(data){
+      alert('用户已注销');
+      localStorage._id = '';
+      }
+      });
+      });
+      });

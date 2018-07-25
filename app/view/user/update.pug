@@ -1,0 +1,32 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(http-equiv='X-UA-Compatible', content='ie=edge')
+    title 更新用户信息
+  body
+    h3 更新用户信息
+    form
+      input#userEmail(type='text')
+      button#updateBtn(type='button') 更新用户信息
+    script(src='http://ajax.microsoft.com/ajax/jquery/jquery-1.4.min.js')
+    script.
+      $(document).ready(function(){
+      $("#updateBtn").click(function(){
+      $.ajax({
+      type: "put",
+      beforeSend: function(request) {
+        request.setRequestHeader("Authorization", localStorage.token);
+      },
+      url: "/api/v1/updateuser",
+      data: {userEmail:$("#userEmail").val(), _id: localStorage._id},
+      dataType: "json",
+      success: function(data){
+        if (res.code === 1) {
+          window.location.href = '/user';
+        }
+      }
+      });
+      });
+      });

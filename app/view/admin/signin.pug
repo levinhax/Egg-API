@@ -1,0 +1,34 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(http-equiv='X-UA-Compatible', content='ie=edge')
+    title 登录
+  body
+    h3 登录
+    form
+      input#userName(type='text')
+      input#userPass(type='password')
+      button#signinBtn(type='button') 登录
+    script(src='http://ajax.microsoft.com/ajax/jquery/jquery-1.4.min.js')
+    script.
+      $(document).ready(function(){
+      $("#signinBtn").click(function(){
+      $.ajax({
+      type: "post",
+      url: "/api/v1/signin",
+      data: {userName:$("#userName").val(), userPass:$("#userPass").val()},
+      dataType: "json",
+      success: function(data){
+      localStorage._id = data.data._id;
+      localStorage.userRole = data.data.userRole;
+      localStorage.token = data.token;
+      //- alert('res :' + JSON.stringify(data));
+      if (data.code === 1) {
+        window.location.href = '/user';
+      }
+      }
+      });
+      });
+      });
