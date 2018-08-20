@@ -1,0 +1,32 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(http-equiv='X-UA-Compatible', content='ie=edge')
+    title 修改
+  body
+    h3 修改
+    form
+      input#projectLink(type='text')
+      input#projectImg(type='text')
+      button#updateBtn(type='button') 修改
+    script(src='http://ajax.microsoft.com/ajax/jquery/jquery-1.4.min.js')
+    script.
+      $(document).ready(function(){
+      $("#updateBtn").click(function(){
+      var id = '5b793abf0f18ba2980c1a7ff';
+      $.ajax({
+      type: "put",
+      beforeSend: function(request) {
+        request.setRequestHeader("Authorization", localStorage.token);
+      },
+      url: "/api/v1/projects/" + id,
+      data: {projectLink:$("#projectLink").val(), projectImg:[$("#projectImg").val(),],},
+      dataType: "json",
+      success: function(data){
+      alert('res :' + JSON.stringify(data));
+      }
+      });
+      });
+      });

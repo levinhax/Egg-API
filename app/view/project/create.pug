@@ -1,0 +1,35 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(http-equiv='X-UA-Compatible', content='ie=edge')
+    title 创建
+  body
+    h3 创建
+    form
+      input#projectName(type='text')
+      input#projectDesc(type='text')
+      input#projectCreater(type='text')
+      input#projectTag(type='text')
+      input#projectLink(type='text')
+      input#projectImg(type='text')
+      button#createBtn(type='button') 创建
+    script(src='http://ajax.microsoft.com/ajax/jquery/jquery-1.4.min.js')
+    script.
+      $(document).ready(function(){
+      $("#createBtn").click(function(){
+      $.ajax({
+      type: "post",
+      beforeSend: function(request) {
+        request.setRequestHeader("Authorization", localStorage.token);
+      },
+      url: "/api/v1/projects",
+      data: {projectName:$("#projectName").val(), projectDesc:$("#projectDesc").val(), projectCreater: $("#projectCreater").val(), projectTag:[$("#projectTag").val(),'wenzhang2','wenzhang3'], projectLink:$("#projectLink").val(), projectImg:[$("#projectImg").val(),],},
+      dataType: "json",
+      success: function(data){
+      alert('res :' + JSON.stringify(data));
+      }
+      });
+      });
+      });

@@ -14,6 +14,11 @@ module.exports = app => {
   router.get('/updateuser', controller.home.updateUser);
   router.get('/logoff', controller.home.logoff);
   router.get('/deleteuser', controller.home.deleteUser);
+  router.get('/createproject', controller.home.createProject);
+  router.get('/project', controller.home.indexProject);
+  router.get('/showproject', controller.home.showProject);
+  router.get('/updateproject', controller.home.updateProject);
+  router.get('/deleteproject', controller.home.deleteProject);
 
   // 注册登录
   router.post('/api/v1/signup', controller.user.signup);
@@ -25,4 +30,7 @@ module.exports = app => {
   router.put('/api/v1/updateuser', controller.user.updateUser);
   router.delete('/api/v1/logoff', controller.user.logOff);
   router.delete('/api/v1/deleteuser', controller.user.deleteUser);
+
+  // project RESTful API
+  router.resources('projects', '/api/v1/projects', controller.projects);
 };

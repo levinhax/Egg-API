@@ -1,0 +1,30 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(http-equiv='X-UA-Compatible', content='ie=edge')
+    title 查找项目
+  body
+    h3 查找项目信息
+    div.projectInfo
+    script(src='http://ajax.microsoft.com/ajax/jquery/jquery-1.4.min.js')
+    script.
+      $(document).ready(function(){
+      (function(){
+      var _id = localStorage._id;
+      var projectTag = ['wenzhang2'];
+      //- var projectTag = ['shige'];
+      var page = 1;
+      var limit = 10;
+      $.ajax({
+      type: "get",
+      url: "/api/v1/projects/?projectTag=" + projectTag + '&page=' + page + '&limit=' + limit,
+      dataType: "json",
+      success: function(data){
+      //- alert('res :' + JSON.stringify(data));
+      $('.userInfo').text(JSON.stringify(data));
+      }
+      });
+      })();
+      });

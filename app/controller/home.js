@@ -38,6 +38,26 @@ class HomeController extends Controller {
     await ctx.render('user/delete.pug');
   }
 
+  async createProject() {
+    const { ctx } = this;
+    await ctx.render('project/create.pug');
+  }
+  async indexProject() {
+    const { ctx } = this;
+    await ctx.render('project/index.pug');
+  }
+  async showProject() {
+    const { ctx } = this;
+    await ctx.render('project/show.pug');
+  }
+  async updateProject() {
+    const { ctx } = this;
+    await ctx.render('project/update.pug');
+  }
+  async deleteProject() {
+    const { ctx } = this;
+    await ctx.render('project/delete.pug');
+  }
 }
 
 module.exports = HomeController;
