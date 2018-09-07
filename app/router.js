@@ -33,4 +33,12 @@ module.exports = app => {
 
   // project RESTful API
   router.resources('projects', '/api/v1/projects', controller.projects);
+
+  // 文件上传删除
+  router.post('/api/v1/ajaxupload', controller.files.ajaxUpload);
+  router.post('/api/v1/bufferupload', controller.files.bufferUpload);
+  router.post('/api/v1/formupload', controller.files.formUpload);
+  router.post('/api/v1/multipleupload', controller.files.multipleUpload);
+  router.post('/api/v1/delfile', controller.files.delFile);
+  router.post('/api/v1/delfiles', controller.files.delFiles);
 };

@@ -9,7 +9,10 @@
     "egg-scripts": "^2.5.0",
     "egg-validate": "^1.0.0",
     "egg-view-pug": "^1.0.0",
-    "jsonwebtoken": "^8.3.0"
+    "jsonwebtoken": "^8.3.0",
+    "mz-modules": "^2.1.0",
+    "stream-to-array": "^2.3.0",
+    "stream-wormhole": "^1.1.0"
   },
   "devDependencies": {
     "autod": "^3.0.1",
