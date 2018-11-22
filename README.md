@@ -2,7 +2,7 @@
 
 使用Egg.js创建后台服务，提供API接口
 
-技术栈: Egg.js、MongoDB、mongoose
+技术栈: Egg.js、MongoDB、mongoose、MySQL
 
 所有API接口在postman上通过测试，说明如下：
 
@@ -17,6 +17,7 @@
 - 用户模块(注册登录)(user)
 - 项目(projects)
 - 文件上传删除(files)
+- MySQL demo
 
 项目正在持续更新中，喜欢的请点心，关注，star ,fork,这些是我长期坚持下去的动力 (。＿ 。） ✎＿
 

@@ -8,6 +8,11 @@ exports.mongoose = {
   package: 'egg-mongoose',
 };
 
+exports.mysql = {
+  enable: true,
+  package: 'egg-mysql',
+};
+
 exports.pug = {
   enable: true,
   package: 'egg-view-pug',

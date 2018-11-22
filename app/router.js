@@ -19,6 +19,8 @@ module.exports = app => {
   router.get('/showproject', controller.home.showProject);
   router.get('/updateproject', controller.home.updateProject);
   router.get('/deleteproject', controller.home.deleteProject);
+  router.get('/createmysql', controller.home.createMysql);
+  router.get('/mysql', controller.home.indexMysql);
 
   // 注册登录
   router.post('/api/v1/signup', controller.user.signup);
@@ -33,6 +35,9 @@ module.exports = app => {
 
   // project RESTful API
   router.resources('projects', '/api/v1/projects', controller.projects);
+
+  // Mysql FESTful API
+  router.resources('mysqls', '/api/v1/mysqls', controller.mysqls);
 
   // 文件上传删除
   router.post('/api/v1/ajaxupload', controller.files.ajaxUpload);

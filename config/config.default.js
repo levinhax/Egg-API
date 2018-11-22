@@ -18,6 +18,20 @@ module.exports = appInfo => {
     options: {},
   };
 
+// 使用MySQL数据库
+config.mysql = {
+  // 单数据库信息配置
+  client: {
+    host: 'localhost',
+    port: '3306',
+    user: 'root',
+    password: 'tust2014',
+    database: 'apiExample',
+  },
+  app: true,
+  agent: false,
+};
+
   // 加密盐
   config.pwd_salt = 'egg-api-salt';
 

@@ -1,0 +1,27 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(http-equiv='X-UA-Compatible', content='ie=edge')
+    title Mysql查找
+  body
+    h3 Mysql查找
+    input#searchWord(type='text')
+    button#btn(type='button') 查找
+    div.mysqlInfo
+    script(src='http://ajax.microsoft.com/ajax/jquery/jquery-1.4.min.js')
+    script.
+      $(document).ready(function(){
+      $("#btn").click(function(){
+      $.ajax({
+      type: "get",
+      url: "/api/v1/mysqls/?place=" + $("#searchWord").val(),
+      dataType: "json",
+      success: function(data){
+      //- alert('res :' + JSON.stringify(data));
+      $('.mysqlInfo').text(JSON.stringify(data));
+      }
+      });
+      });
+      });

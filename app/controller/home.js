@@ -58,6 +58,15 @@ class HomeController extends Controller {
     const { ctx } = this;
     await ctx.render('project/delete.pug');
   }
+
+  async createMysql() {
+    const { ctx } = this;
+    await ctx.render('mysqlDemo/insert.pug');
+  }
+  async indexMysql() {
+    const { ctx } = this;
+    await ctx.render('mysqlDemo/index.pug');
+  }
 }
 
 module.exports = HomeController;

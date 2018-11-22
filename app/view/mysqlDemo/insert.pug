@@ -1,0 +1,34 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(http-equiv='X-UA-Compatible', content='ie=edge')
+    title Mysql插入值
+  body
+    h3 插入值
+    form
+      input#title(type='text')
+      input#place(type='text')
+      button#insertBtn(type='button') 插入
+    script(src='http://ajax.microsoft.com/ajax/jquery/jquery-1.4.min.js')
+    script.
+      $(document).ready(function(){
+      $("#insertBtn").click(function(){
+      $.ajax({
+      type: "post",
+      beforeSend: function(request) {
+        request.setRequestHeader("Authorization", localStorage.token);
+      },
+      url: "/api/v1/mysqls",
+      data: {title:$("#title").val(), place:$("#place").val()},
+      dataType: "json",
+      success: function(data){
+      // alert('res :' + JSON.stringify(data));
+      if(data.affectedRows == 1) {
+        alert('插入成功');
+      }
+      }
+      });
+      });
+      });
