@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Egg-API MySql create</title>
+    <link rel="stylesheet" href="../lib/element-ui/element-ui-2.4.8.min.css">
+    <style>
+        h3 {
+            text-align: center;
+        }
+
+        .mysql-container {
+            width: 280px;
+            border: 1px solid #ccc;
+            margin: 20px auto 0;
+            padding: 16px 24px;
+            box-sizing: border-box;
+        }
+
+        .mysql-container .el-input {
+            margin-bottom: 6px;
+        }
+
+        .el-message {
+            height: 60px;
+            padding-left: 6px;
+            position: absolute;
+            top: 200px;
+            left: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h3>MySQL 插入值</h3>
+        <div class="mysql-container">
+            <el-input v-model="mysqlTitle" placeholder="标题"></el-input>
+            <el-input v-model="mysqlPlace" placeholder="地点"></el-input>
+            <el-button @click="insertVal">插入</el-button>
+        </div>
+    </div>
+
+    <script src="../lib/vue/vue-2.5.21.min.js"></script>
+    <script src="../lib/axios/axios-0.18.0.min.js"></script>
+    <script src="../lib/element-ui/element-ui-2.4.8.min.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: function () {
+                return {
+                    mysqlTitle: '',
+                    mysqlPlace: ''
+                }
+            },
+            mounted() {},
+            methods: {
+                insertVal() {
+                    let postData = {
+                        title: this.mysqlTitle,
+                        place: this.mysqlPlace
+                    };
+                    axios({
+                        method: 'post',
+                        url: '/api/v1/mysqls',
+                        data: postData,
+                        headers: {
+                            'Authorization': localStorage.getItem('token')
+                        }
+                    }).then(res => {
+                        if (res.data.affectedRows === 1) {
+                            this.$message.success('插入成功');
+                            setTimeout(() => {
+                                window.location.href = './index.html';
+                            }, 1000);
+                        } else {
+                            this.$message.error('插入失败');
+                        }
+                    });
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

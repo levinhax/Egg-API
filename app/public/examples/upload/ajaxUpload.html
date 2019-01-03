@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ajax文件上传</title>
+    <link rel="stylesheet" href="../lib/element-ui/element-ui-2.4.8.min.css">
+    <style>
+        h3 {
+            text-align: center;
+        }
+        #file_up {
+            width: 400px;
+            border: 1px solid #ccc;
+            margin: 20px auto 0;
+            padding: 20px;
+        }
+        #file_up .fileinput-button {
+            width: 90px;
+            height: 30px;
+            text-align: center;
+            background: #16B18e;
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        #file_up .fileinput-button span {
+            font-size: 16px;
+            line-height: 30px;
+            color: #fff;
+        }
+        #file_up .fileinput-button input {
+            height: 30px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            font-size: 16px;
+            opacity: 0;
+        }
+        #fileList {
+            width: 60%;
+            height: 30px;
+            padding: 0 5px !important;
+            margin: 15px 0 !important;
+            background: #EDEDED;
+        }
+        .el-message {
+            height: 60px;
+            padding-left: 6px;
+            position: absolute;
+            top: 200px;
+            left: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h3>Ajax文件上传</h3>
+        <div id="file_up">
+            <div class="fileinput-button">
+                <span>浏览本地</span>
+                <input type="file" @change="selectFile">
+            </div>
+            <el-input id="fileList" v-model="fileList" :disabled="true" placeholder="请选择要上传的文件"></el-input>
+            <el-button id="up_btn" @click="uploadFile">上传</el-button>
+        </div>
+    </div>
+
+    <script src="../lib/vue/vue-2.5.21.min.js"></script>
+    <script src="../lib/axios/axios-0.18.0.min.js"></script>
+    <script src="../lib/element-ui/element-ui-2.4.8.min.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data () {
+                return {
+                    upFile: '',
+                    fileList: '',
+                }
+            },
+            methods: {
+                selectFile(e) {
+                    this.upFile = e.target.files[0];
+                    this.fileList = e.target.files[0].name;
+                },
+                uploadFile() {
+                    let formData = new FormData();
+                    formData.append('filename', this.upFile);
+                    axios({
+                        method: 'post',
+                        url: '/api/v1/ajaxupload',
+                        data: formData,
+                        headers: {
+                            'Authorization': localStorage.getItem('token')
+                        }
+                    }).then(res => {
+                        if (res.status === 200) {
+                            this.$message.success('文件上传成功');
+                        } else {
+                            this.$message.error('文件上传失败');
+                        }
+                    });
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

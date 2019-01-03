@@ -25,12 +25,12 @@ module.exports = app => {
   // 注册登录
   router.post('/api/v1/signup', controller.user.signup);
   router.post('/api/v1/signin', controller.user.signin);
-  router.get('/api/v1/signout', controller.user.signout);
+  router.get('/api/v1/signoff', controller.user.signout);
 
   // 用户信息
   router.get('/api/v1/user/:_id', controller.user.findUser);
   router.put('/api/v1/updateuser', controller.user.updateUser);
-  router.delete('/api/v1/logoff', controller.user.logOff);
+  router.delete('/api/v1/logout', controller.user.logOut);
   router.delete('/api/v1/deleteuser', controller.user.deleteUser);
 
   // project RESTful API

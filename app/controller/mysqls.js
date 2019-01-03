@@ -14,9 +14,14 @@ class MysqlController extends Controller {
   async index() {
     const { ctx } = this;
     const queryMsg = {
-      place: ctx.query.place || '',
+      place: ctx.query.place,
     };
-    const result = await ctx.service.mysqls.index(queryMsg);
+    let result;
+    if (queryMsg.place === '') {
+      result = await ctx.service.mysqls.getAll();
+    } else {
+      result = await ctx.service.mysqls.index(queryMsg);
+    }
     ctx.body = result;
   }
 }

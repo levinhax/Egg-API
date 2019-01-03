@@ -19,6 +19,13 @@
 - 文件上传删除(files)
 - MySQL demo
 
+
+另：
+
+使用前安装配置MongoDB和MySQL数据库，如果没有记得先注释掉 /config/config.default.js 里配置数据库的语句块(注意: 我们的数据是基于数据库的)
+
+demo访问格式如下: http://127.0.0.1:7001/public/examples/index.html
+
 项目正在持续更新中，喜欢的请点心，关注，star ,fork,这些是我长期坚持下去的动力 (。＿ 。） ✎＿
 
 ## 快速入门

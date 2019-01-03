@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>用户登录</title>
+    <link rel="stylesheet" href="../lib/element-ui/element-ui-2.4.8.min.css">
+    <style>
+        h3 {
+            text-align: center;
+        }
+        .signin-container {
+            width: 260px;
+            margin: 25px auto 0;
+        }
+        .signin-container .el-input {
+            margin-bottom: 10px;
+        }
+        .signin-container .el-button {
+           width: 100%;
+        }
+        .el-message {
+            height: 60px;
+            padding-left: 6px;
+            position: absolute;
+            top: 200px;
+            left: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h3>用户登录</h3>
+        <div class="signin-container">
+            <el-input type="text" v-model="userName" placeholder="请输入用户名"></el-input>
+            <el-input type="password" v-model="userPass" placeholder="请输入用户密码"></el-input>
+            <el-button @click="signIn">登录</el-button>
+        </div>
+    </div>
+
+    <script src="../lib/vue/vue-2.5.21.min.js"></script>
+    <script src="../lib/axios/axios-0.18.0.min.js"></script>
+    <script src="../lib/element-ui/element-ui-2.4.8.min.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: function () {
+                return {
+                    userName: '',
+                    userPass: '',
+                }
+            },
+            methods: {
+                signIn () {
+                    let postData = {
+                        userName: this.userName,
+                        userPass: this.userPass,
+                    };
+                    axios.post('/api/v1/signin', postData).then(res => {
+                        if (res.data.code === 1) {
+                            this.$message.success('登录成功');
+                            localStorage.u_id = res.data.data._id;
+                            localStorage.token = res.data.token;
+                            setTimeout(() => {
+                                window.location.href = './user.html';
+                            }, 2000);
+                        } else {
+                            this.$message.error('登录失败');
+                        }
+                    });
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

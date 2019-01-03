@@ -19,6 +19,12 @@ class MysqlService extends Service {
     return result;
   }
 
+  async getAll() {
+    const { ctx } = this;
+    const result = await ctx.app.mysql.select('posts');
+    return result;
+  }
+
 }
 
 module.exports = MysqlService;

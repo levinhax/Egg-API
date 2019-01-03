@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Egg-API demo</title>
+    <link rel="stylesheet" href="./lib/element-ui/element-ui-2.4.8.min.css">
+</head>
+
+<body>
+    <div id="app">
+        <el-button @click="visible = true">Button</el-button>
+        <el-dialog :visible.sync="visible" title="Hello world">
+            <p>Try Element</p>
+        </el-dialog>
+    </div>
+
+    <script src="./lib/vue/vue-2.5.21.min.js"></script>
+    <script src="./lib/element-ui/element-ui-2.4.8.min.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: function () {
+                return {
+                    visible: false
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

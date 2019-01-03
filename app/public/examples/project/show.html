@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Egg-API 项目具体查找</title>
+    <link rel="stylesheet" href="../lib/element-ui/element-ui-2.4.8.min.css">
+    <style>
+        h3 {
+            text-align: center;
+        }
+
+        .project-container {
+            width: 80%;
+            border: 1px solid #ccc;
+            margin: 20px auto 0;
+            padding: 15px 24px;
+            box-sizing: border-box;
+        }
+
+        .el-message {
+            height: 60px;
+            padding-left: 6px;
+            position: absolute;
+            top: 200px;
+            left: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h3>项目信息</h3>
+        <div class="project-container">
+            <p>projectId: {{ projectId }}</p>
+            <ul>
+                <li v-for="(item, index) in projectData" :key="index">
+                    {{ index }} : {{ item }}
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="../lib/vue/vue-2.5.21.min.js"></script>
+    <script src="../lib/axios/axios-0.18.0.min.js"></script>
+    <script src="../lib/moment/moment.js"></script>
+    <script src="../lib/element-ui/element-ui-2.4.8.min.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: function () {
+                return {
+                    projectData: '',
+                    projectId: '5c2c7ab4a5b50f5838b0d24e'
+                }
+            },
+            mounted() {
+                this.getProjectData();
+            },
+            methods: {
+                //时间格式化
+                dateFormat: function (row, column) {
+                    var date = row[column.property];
+                    if (date == undefined) {
+                        return "";
+                    }
+                    return moment(date).format("YYYY-MM-DD HH:mm:ss");
+                },
+                getProjectData() {
+                    let projectId = this.projectId;
+                    axios({
+                        method: 'get',
+                        url: '/api/v1/projects/' + projectId,
+                    }).then(res => {
+                        if (res.status === 200) {
+                            this.projectData = res.data;
+                        } else {
+                            this.$message.error('项目信息查询失败');
+                        }
+                    });
+                },
+            },
+        })
+    </script>
+</body>
+
+</html>

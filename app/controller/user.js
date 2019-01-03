@@ -81,14 +81,14 @@ class UserController extends Controller {
     ctx.body = result;
   }
   // 用户注销
-  async logOff() {
+  async logOut() {
     const { ctx } = this;
     const rule = {
       _id: { type: 'string', required: true, message: '必填项' },
     };
     const userMsg = ctx.request.body;
     await ctx.validate(rule, userMsg);
-    const result = await ctx.service.user.logOff(userMsg);
+    const result = await ctx.service.user.logOut(userMsg);
     ctx.body = result;
   }
   // 超级管理员删除用户

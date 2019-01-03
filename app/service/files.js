@@ -13,10 +13,10 @@ class FilesService extends Service {
     const { ctx, config } = this;
     const result = {};
     const filename = (new Date()).getTime() + '_' + ctx.helper.rndNum(6) + '_' + stream.filename.toLowerCase();
-    const target = path.join(this.config.baseDir, 'app' + config.imgLocation.substring(config.imgLocationTruncated), filename);
+    const target = path.join(this.config.baseDir, 'app' + config.fileLocation.substring(config.fileLocationTruncated), filename);
     const writeStream = fs.createWriteStream(target);
     await pump(stream, writeStream);
-    const filePath = config.imgLocation + filename;
+    const filePath = config.fileLocation + filename;
     result.name = filename;
     result.path = filePath;
     return result;

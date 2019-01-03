@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Egg-API 项目创建</title>
+    <link rel="stylesheet" href="../lib/element-ui/element-ui-2.4.8.min.css">
+    <style>
+        h3 {
+            text-align: center;
+        }
+
+        .project-container {
+            width: 80%;
+            border: 1px solid #ccc;
+            margin: 20px auto 0;
+            padding: 16px 24px;
+            box-sizing: border-box;
+        }
+
+        .project-container .el-input {
+            margin-bottom: 6px;
+        }
+
+        .el-message {
+            height: 60px;
+            padding-left: 6px;
+            position: absolute;
+            top: 200px;
+            left: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h3>项目创建</h3>
+        <div class="project-container">
+            <el-input v-model="projectName" placeholder="项目标题"></el-input>
+            <el-input v-model="projectDesc" placeholder="项目描述"></el-input>
+            <el-input v-model="projectTag" placeholder="项目标签"></el-input>
+            <el-input v-model="projectLink" placeholder="项目链接"></el-input>
+            <el-input v-model="projectImg" placeholder="项目图片"></el-input>
+            <el-button @click="createProject">创建项目</el-button>
+        </div>
+    </div>
+
+    <script src="../lib/vue/vue-2.5.21.min.js"></script>
+    <script src="../lib/axios/axios-0.18.0.min.js"></script>
+    <script src="../lib/element-ui/element-ui-2.4.8.min.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: function () {
+                return {
+                    projectName: '',
+                    projectDesc: '',
+                    projectTag: '',
+                    projectLink: '',
+                    projectImg: '',
+                }
+            },
+            mounted() {},
+            methods: {
+                createProject() {
+                    let postData = {
+                        projectName: this.projectName,
+                        projectDesc: this.projectDesc,
+                        projectCreater: localStorage.getItem('u_id'),
+                        projectTag: ['all', this.projectTag],
+                        projectLink: this.projectLink,
+                        projectImg: [this.projectImg]
+                    };
+                    axios({
+                        method: 'post',
+                        url: '/api/v1/projects',
+                        data: postData,
+                        headers: {
+                            'Authorization': localStorage.getItem('token')
+                        }
+                    }).then(res => {
+                        if(res.status === 201) {
+                            this.$message.success('项目创建成功');
+                            setTimeout(() => {
+                                window.location.href = './index.html';
+                            }, 2000);
+                        } else {
+                            this.$message.error('项目创建失败');
+                        }
+                    });
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

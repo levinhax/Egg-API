@@ -16,6 +16,7 @@ module.exports = options => {
     } else {
       let decode;
       try {
+        console.log(token);
         decode = JWT.verify(token, options.secret);
         if (!decode || !decode.userName) {
           ctx.throw(401, '没有权限，请登录');

@@ -12,25 +12,28 @@ module.exports = appInfo => {
     'jwt',
   ];
 
+  // 文件上传路径设置
+  config.fileLocation = '/public/files';
+
   // 使用mongoose连接数据库
   config.mongoose = {
     url: 'mongodb://127.0.0.1/apiExample',
     options: {},
   };
 
-// 使用MySQL数据库
-config.mysql = {
-  // 单数据库信息配置
-  client: {
-    host: 'localhost',
-    port: '3306',
-    user: 'root',
-    password: 'tust2014',
-    database: 'apiExample',
-  },
-  app: true,
-  agent: false,
-};
+  // 使用MySQL数据库
+  config.mysql = {
+    // 单数据库信息配置
+    client: {
+      host: 'localhost',
+      port: '3306',
+      user: 'root',
+      password: 'tust2014',
+      database: 'apiExample',
+    },
+    app: true,
+    agent: false,
+  };
 
   // 加密盐
   config.pwd_salt = 'egg-api-salt';

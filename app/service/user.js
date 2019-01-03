@@ -81,7 +81,7 @@ class UserService extends Service {
     return res;
   }
   // 用户注销
-  async logOff(userMsg) {
+  async logOut(userMsg) {
     const { ctx } = this;
     const res = {};
     const result = await ctx.model.User.remove(userMsg);

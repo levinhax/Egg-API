@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>用户中心</title>
+    <link rel="stylesheet" href="../lib/element-ui/element-ui-2.4.8.min.css">
+    <style>
+        h3 {
+            text-align: center;
+        }
+        .user-container {
+            width: 240px;
+            border: 1px solid #ccc;
+            margin: 20px auto;
+            padding-left: 24px;
+            box-sizing: border-box;
+        }
+        #signOffBtn {
+            display: block;
+            width: 240px;
+            margin: 0 auto 12px;
+        }
+        #logOutBtn {
+            display: block;
+            width: 240px;
+            margin: 0 auto;
+        }
+        .el-message {
+            height: 60px;
+            padding-left: 6px;
+            position: absolute;
+            top: 200px;
+            left: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h3>用户中心</h3>
+        <div class="user-container">
+            <p>用户名: {{ userName }}</p>
+            <p>用户邮箱: {{ userEmail }}</p>
+            <p>用户角色: {{ userRole }}</p>
+            <p>创建日期: {{ userCreate }}</p>
+        </div>
+        <el-button id="signOffBtn" @click="signOff">登出</el-button>
+        <el-button id="logOutBtn" type="danger" @click="logOut">注销</el-button>
+    </div>
+
+    <script src="../lib/vue/vue-2.5.21.min.js"></script>
+    <script src="../lib/axios/axios-0.18.0.min.js"></script>
+    <script src="../lib/element-ui/element-ui-2.4.8.min.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: function () {
+                return {
+                    userId: '',
+                    userName: '',
+                    userEmail: '',
+                    userRole: '',
+                    userCreate: ''
+                }
+            },
+            mounted() {
+                this.getUserData();
+            },
+            methods: {
+                getUserData() {
+                    this.userId = localStorage.getItem('u_id');
+                    if (!this.userId) {
+                        window.location.href = './signin.html';
+                    } else {
+                        axios.get('/api/v1/user/' + this.userId).then(res => {
+                            let data = res.data.data;
+                            this.userName = data.userName;
+                            this.userEmail = data.userEmail;
+                            if (data.userRole === 1) {
+                                this.userRole = '普通用户';
+                            } else if (data.userRole === 2) {
+                                this.userRole = '管理员';
+                            } else if (data.userRole === 3) {
+                                this.userRole = '超级管理员';
+                            }
+                            this.userCreate = new Date(data.userCreate).toLocaleString();
+                        });
+                    }
+                },
+                signOff() {
+                    // 登出
+                    axios.get('/api/v1/signoff').then(res => {
+                        if (res.data.code === 1) {
+                            this.$message.success('用户已登出');
+                            localStorage.clear();
+                            setTimeout(() => {
+                                window.location.href = './signin.html';
+                            }, 1000);
+                        }
+                    });
+                },
+                logOut() {
+                    // 注销
+                    let postData = {
+                        _id: this.userId,
+                    };
+                    axios({
+                        method: 'delete',
+                        url: '/api/v1/logout',
+                        data: postData,
+                        headers: {
+                            'Authorization': localStorage.getItem('token')
+                        }
+                    }).then(res => {
+                        if (res.data.code === 1) {
+                            this.$message.success('注销成功');
+                            window.localStorage.clear();
+                            setTimeout(() => {
+                                window.location.href = './signin.html';
+                            }, 2000);
+                        } else {
+                            this.$message.error('注销失败');
+                        }
+                    });
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

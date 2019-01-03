@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Egg-API 项目查找</title>
+    <link rel="stylesheet" href="../lib/element-ui/element-ui-2.4.8.min.css">
+    <style>
+        h3 {
+            text-align: center;
+        }
+
+        .project-container {
+            width: 80%;
+            border: 1px solid #ccc;
+            margin: 20px auto 0;
+            padding: 15px 24px;
+            box-sizing: border-box;
+        }
+        .project-container .key-input {
+            width: 81%;
+        }
+        .project-container .search-btn {
+            width: 15%;
+        }
+
+        .el-message {
+            height: 60px;
+            padding-left: 6px;
+            position: absolute;
+            top: 200px;
+            left: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h3>项目信息</h3>
+        <div class="project-container">
+            <div class="search-contaienr">
+                <el-input class="key-input" v-model="projectSerachTag" placeholder="请输入查询关键词"></el-input>
+                <el-button @click="searchProjectData" class="search-btn">项目查询</el-button>
+            </div>
+            <el-table stripe :data="projectTableData" style="width: 100%">
+                <el-table-column type="index" width="50">
+                </el-table-column>
+                <el-table-column prop="projectName" label="项目标题">
+                </el-table-column>
+                <el-table-column prop="projectDesc" label="项目描述">
+                </el-table-column>
+                <el-table-column prop="projectTag" label="项目标签">
+                    <template slot-scope="scope">
+                        <ul>
+                            <li v-for="(item, index) in scope.row.projectTag" :key="index">
+                                {{ item }}
+                            </li>
+                        </ul>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="projectLink" label="项目链接">
+                </el-table-column>
+                <el-table-column prop="projectImg" label="项目图片">
+                    <template slot-scope="scope">
+                        <ol>
+                            <li v-for="(item, index) in scope.row.projectImg" :key="index">
+                                {{ item }}
+                            </li>
+                        </ol>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="projectDate" label="创建日期" :formatter="dateFormat">
+                </el-table-column>
+                <el-table-column prop="projectLike" label="点赞">
+                </el-table-column>
+                <el-table-column label="操作" width="150">
+                    <template slot-scope="scope">
+                        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <el-dialog title="项目信息" :visible.sync="dialogFormVisible">
+                <el-form :model="form">
+                    <el-form-item label="项目链接">
+                        <el-input v-model="form.projectLink" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="项目图片" v-for="(item, index) in form.projectImg" :key="index">
+                        <el-input v-model="item" @blur="changeImgUrl(item, index)"></el-input>
+                    </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="dialogFormVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="updateProjectData">确 定</el-button>
+                </div>
+            </el-dialog>
+        </div>
+    </div>
+
+    <script src="../lib/vue/vue-2.5.21.min.js"></script>
+    <script src="../lib/axios/axios-0.18.0.min.js"></script>
+    <script src="../lib/moment/moment.js"></script>
+    <script src="../lib/element-ui/element-ui-2.4.8.min.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: function () {
+                return {
+                    projectTableData: [],
+                    projectSerachTag: '',
+                    projectAllTag: 'all',
+                    page: 1,
+                    limit: 10,
+                    dialogFormVisible: false,
+                    form: {
+                        id: '',
+                        link: '',
+                        img: [],
+                    },
+                    imgUrl1: '',
+                    imgUrl2: '',
+                    imgUrl3: ''
+                }
+            },
+            mounted() {
+                this.getAllProjectData();
+            },
+            methods: {
+                //时间格式化
+                dateFormat: function (row, column) {
+                    var date = row[column.property];
+                    if (date == undefined) {
+                        return "";
+                    }
+                    return moment(date).format("YYYY-MM-DD HH:mm:ss");
+                },
+                getAllProjectData() {
+                    axios({
+                        method: 'get',
+                        url: "/api/v1/projects/?projectTag=" + this.projectAllTag + '&page=' + this.page +
+                            '&limit=' + this.limit,
+                    }).then(res => {
+                        if (res.status === 200) {
+                            this.projectTableData = res.data;
+                        } else {
+                            this.$message.error('全部项目信息查询失败');
+                        }
+                    });
+                },
+                searchProjectData() {
+                    axios({
+                        method: 'get',
+                        url: "/api/v1/projects/?projectTag=" + this.projectSerachTag + '&page=' + this.page +
+                            '&limit=' + this.limit,
+                    }).then(res => {
+                        if (res.status === 200) {
+                            this.projectTableData = res.data;
+                        } else {
+                            this.$message.error('全部项目信息查询失败');
+                        }
+                    });
+                },
+                changeImgUrl(val, index) {
+                    this.form.projectImg[index] = val;
+                },
+                updateProjectData() {
+                    let postData = {
+                        projectLink: this.form.projectLink,
+                        projectImg: this.form.projectImg
+                    };
+                    axios({
+                        method: 'put',
+                        url: '/api/v1/projects/' + this.form._id,
+                        data: postData,
+                        headers: {
+                            'Authorization': localStorage.getItem('token')
+                        }
+                    }).then(res => {
+                        if(res.status === 204) {
+                            this.$message.success('数据已更新');
+                            this.dialogFormVisible = false;
+                            this.getAllProjectData();
+                        } else {
+                            this.$message.error('数据更新失败');
+                            this.dialogFormVisible = false;
+                        }
+                    });
+                },
+                handleEdit(index, row) {
+                    this.dialogFormVisible = true;
+                    this.form = row;
+                },
+                handleDelete(index, row) {
+                    axios({
+                        method: 'delete',
+                        url: '/api/v1/projects/' + row._id,
+                        headers: {
+                            'Authorization': localStorage.getItem('token')
+                        }
+                    }).then(res => {
+                        if(res.data.ok === 1) {
+                            this.$message.success('删除成功');
+                            this.getAllProjectData();
+                        } else {
+                            this.$message.error('删除失败');
+                        }
+                    });
+                },
+            },
+        })
+    </script>
+</body>
+
+</html>
